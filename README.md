@@ -141,11 +141,5 @@ python mqtt_domotique.py
 ---
 
 ## 🚀 Conclusion
-Votre serveur Mosquitto est maintenant en place et vous pouvez envoyer/recevoir des messages MQTT facilement avec MQTT Explorer et un script Python ! 🎉
-
-Si vous souhaitez aller plus loin, pensez à ajouter des fonctionnalités comme :
-- Sécuriser Mosquitto avec un identifiant/mot de passe.
-- Ajouter d'autres types d'appareils dans le script Python.
-
-📩 **Besoin d'aide ?** N'hésitez pas à poser vos questions ! 😊
+Votre serveur Mosquitto est maintenant en place et vous pouvez envoyer/recevoir des messages MQTT facilement avec MQTT Explorer et un script Python ! 🎉 Vous pouvez maintenant observer le comportement du client MQTT et du script python en fonction des messages envoyés par l'API.
 
