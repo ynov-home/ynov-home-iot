@@ -101,7 +101,7 @@ sudo pfctl -E
 ### 📌 Configuration de MQTT Explorer
 1. Ouvrir **MQTT Explorer**.
 2. Ajouter une nouvelle connexion en renseignant :
-   - **Host** : `10.70.4.114`
+   - **Host** : `votre ip`
    - **Port** : `1883`
    - **Client ID** : `mqtt-explorer`
    - **Keep Alive** : `60`
