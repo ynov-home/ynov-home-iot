@@ -140,41 +140,6 @@ python mqtt_domotique.py
 
 ---
 
-## 🎯 6. Tester l'envoi de messages MQTT
-
-### 📌 Envoyer un message de test via MQTT Explorer ou Terminal
-
-#### 🖥️ **Avec Mosquitto (Terminal)**
-##### 🔹 Sur **Linux/macOS**
-```bash
-mosquitto_pub -h 10.70.4.114 -t maison/salon -m '{"name": "lampadaire", "instruction": "allumer"}'
-```
-##### 🔹 Sur **Windows** (Invite de commande dans le dossier Mosquitto)
-```powershell
-mosquitto_pub -h 10.70.4.114 -t maison/salon -m '{"name": "lampadaire", "instruction": "allumer"}'
-```
-
-#### 📡 **Avec MQTT Explorer**
-1. Aller dans l'onglet **Publish**.
-2. Saisir le **Topic** : `maison/salon`
-3. Entrer le **Message** :
-   ```json
-   {
-     "name": "lampadaire",
-     "instruction": "allumer"
-   }
-   ```
-4. Cliquer sur **Publish**.
-
-✅ **Si tout fonctionne bien, le script Python répondra sur** `maison/salon/lampadaire/status` avec :
-```json
-{
-  "status": "on"
-}
-```
-
----
-
 ## 🚀 Conclusion
 Votre serveur Mosquitto est maintenant en place et vous pouvez envoyer/recevoir des messages MQTT facilement avec MQTT Explorer et un script Python ! 🎉
 
