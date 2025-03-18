@@ -1,28 +1,31 @@
 # 📌 Guide d'installation et d'utilisation de Mosquitto et MQTT Explorer
 
-Ce guide explique comment installer Mosquitto et MQTT Explorer, configurer Mosquitto, ouvrir les ports nécessaires, lire les messages avec MQTT Explorer et exécuter un script Python pour interagir avec MQTT.
+Ce guide explique comment installer Mosquitto et MQTT Explorer sur **Windows, Linux et macOS**, configurer Mosquitto, ouvrir les ports nécessaires, lire les messages avec MQTT Explorer et exécuter un script Python pour interagir avec MQTT.
 
 ---
 
 ## 🛠️ 1. Prérequis : Installation de Mosquitto et MQTT Explorer
 
 ### 📌 Installer Mosquitto (Serveur MQTT)
-#### 🔹 Sur Linux (Debian/Ubuntu)
+#### 🔹 Sur **Linux (Debian/Ubuntu)**
 ```bash
 sudo apt update
 sudo apt install mosquitto mosquitto-clients -y
 ```
 
-#### 🔹 Sur Windows
-- Télécharger Mosquitto depuis : [Mosquitto MQTT](https://mosquitto.org/download/)
-- Exécuter l'installateur en laissant les options par défaut.
+#### 🔹 Sur **Windows**
+1. Télécharger Mosquitto depuis : [Mosquitto MQTT](https://mosquitto.org/download/)
+2. Exécuter l'installateur et cocher **Mosquitto Service** pour qu’il démarre automatiquement.
 
-#### 🔹 Sur macOS (via Homebrew)
+#### 🔹 Sur **macOS** (via Homebrew)
 ```bash
 brew install mosquitto
 ```
 
+---
+
 ### 📌 Installer MQTT Explorer
+#### 🔹 Sur **Windows, Linux et macOS**
 1. Télécharger **MQTT Explorer** depuis : [http://mqtt-explorer.com/](http://mqtt-explorer.com/)
 2. Installer l'application et l'ouvrir.
 
@@ -31,45 +34,64 @@ brew install mosquitto
 ## ⚙️ 2. Configuration de Mosquitto
 
 ### 📌 Modifier le fichier de configuration de Mosquitto
-1. Ouvrir le fichier de configuration avec un éditeur de texte :
+#### 🔹 Sur **Linux et macOS**
+1. Ouvrir le fichier de configuration avec :
    ```bash
-   sudo nano /etc/mosquitto/mosquitto.conf  # Sur Linux/macOS
+   sudo nano /etc/mosquitto/mosquitto.conf
    ```
-   **Ou sous Windows**, ouvrir `C:\Program Files\mosquitto\mosquitto.conf` avec un éditeur.
-
-2. Ajouter ou modifier les lignes suivantes :
+2. Ajouter/modifier les lignes suivantes :
    ```ini
    listener 1883  # Port MQTT
-   allow_anonymous true  # Permet les connexions sans authentification
+   allow_anonymous true  # Autorise les connexions sans authentification
    log_type all  # Active tous les logs pour le debug
    persistence true  # Sauvegarde les messages persistants
-   ````
-3. Enregistrer (`CTRL+X`, `Y`, puis `Enter`).
+   ```
+3. Enregistrer (`CTRL+X`, `Y`, `Enter`).
+
+#### 🔹 Sur **Windows**
+1. Ouvrir `C:\Program Files\mosquitto\mosquitto.conf` avec un éditeur de texte (Notepad++, VS Code…).
+2. Ajouter les mêmes lignes que ci-dessus.
 
 ### 📌 Redémarrer Mosquitto pour appliquer les modifications
+#### 🔹 Sur **Linux/macOS**
 ```bash
 sudo systemctl restart mosquitto
 sudo systemctl enable mosquitto
 ```
+#### 🔹 Sur **Windows** (Invite de commande en administrateur)
+```powershell
+net stop mosquitto
+net start mosquitto
+```
 
 ### 📌 Vérifier que Mosquitto fonctionne
+#### 🔹 Sur **Linux/macOS**
 ```bash
 sudo systemctl status mosquitto
 ```
-Si Mosquitto est bien actif, vous verrez un message indiquant qu'il est en cours d'exécution.
+#### 🔹 Sur **Windows**
+```powershell
+sc query mosquitto
+```
 
 ---
 
 ## 🔓 3. Ouvrir les ports pour Mosquitto
 
-### 📌 Sur Linux (Ubuntu/Debian) avec UFW
+### 📌 Sur **Linux (Ubuntu/Debian) avec UFW**
 ```bash
 sudo ufw allow 1883/tcp
 ```
 
-### 📌 Sur Windows (via PowerShell en administrateur)
+### 📌 Sur **Windows** (via PowerShell en administrateur)
 ```powershell
 New-NetFirewallRule -DisplayName "Mosquitto MQTT" -Direction Inbound -Protocol TCP -LocalPort 1883 -Action Allow
+```
+
+### 📌 Sur **macOS**
+```bash
+sudo pfctl -F all
+sudo pfctl -E
 ```
 
 ---
@@ -92,19 +114,31 @@ New-NetFirewallRule -DisplayName "Mosquitto MQTT" -Direction Inbound -Protocol T
 ## 🐍 5. Exécuter et tester le script Python MQTT
 
 ### 📌 Installer Python et les dépendances
-Si Python n'est pas encore installé, téléchargez-le depuis : [https://www.python.org/downloads/](https://www.python.org/downloads/)
-
-Installer la bibliothèque MQTT avec :
+#### 🔹 Sur **Linux/macOS**
 ```bash
-pip install paho-mqtt
+sudo apt install python3 python3-pip -y  # Linux
+brew install python3  # macOS
+pip3 install paho-mqtt
 ```
+
+#### 🔹 Sur **Windows**
+1. Télécharger Python depuis : [https://www.python.org/downloads/](https://www.python.org/downloads/)
+2. Pendant l'installation, cocher **Add Python to PATH**.
+3. Installer les dépendances :
+   ```powershell
+   pip install paho-mqtt
+   ```
 
 ### 📌 Lancer le script Python
+#### 🔹 Sur **Linux/macOS**
 ```bash
-python mqtt_domotique.py
+python3 mqtt_domotique.py
 ```
 
-Si tout fonctionne correctement, le script écoutera les messages MQTT envoyés sur `maison/#` et répondra dynamiquement avec les états des appareils.
+#### 🔹 Sur **Windows**
+```powershell
+python mqtt_domotique.py
+```
 
 ---
 
@@ -112,8 +146,13 @@ Si tout fonctionne correctement, le script écoutera les messages MQTT envoyés 
 
 ### 📌 Envoyer un message de test via MQTT Explorer ou Terminal
 
-#### 🖥️ **Avec Mosquitto (Terminal Linux/macOS/Windows WSL)**
+#### 🖥️ **Avec Mosquitto (Terminal)**
+##### 🔹 Sur **Linux/macOS**
 ```bash
+mosquitto_pub -h 10.70.4.114 -t maison/salon -m '{"name": "lampadaire", "instruction": "allumer"}'
+```
+##### 🔹 Sur **Windows** (Invite de commande dans le dossier Mosquitto)
+```powershell
 mosquitto_pub -h 10.70.4.114 -t maison/salon -m '{"name": "lampadaire", "instruction": "allumer"}'
 ```
 
@@ -146,3 +185,4 @@ Si vous souhaitez aller plus loin, pensez à ajouter des fonctionnalités comme 
 - Ajouter d'autres types d'appareils dans le script Python.
 
 📩 **Besoin d'aide ?** N'hésitez pas à poser vos questions ! 😊
+
