@@ -104,8 +104,6 @@ sudo pfctl -E
    - **Host** : `votre ip`
    - **Port** : `1883`
    - **Client ID** : `mqtt-explorer`
-   - **Keep Alive** : `60`
-   - **Cocher : Auto Subscribe**
 3. Cliquer sur **Connect**.
 4. Dans l'interface, souscrire au topic `maison/#` pour voir tous les messages.
 
